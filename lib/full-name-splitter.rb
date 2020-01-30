@@ -5,7 +5,7 @@ module FullNameSplitter
   PREFIXES = %w(de da la du del dei vda. dello della degli delle van von der den heer ten ter vande vanden vander voor ver aan mc).freeze
 
   class Splitter
-    
+
     def initialize(full_name)
       @full_name  = full_name
       @first_name = []
@@ -16,7 +16,7 @@ module FullNameSplitter
     def split!
       @units = @full_name.split(/\s+/)
       while @unit = @units.shift do
-        if prefix? or with_apostrophe? or (first_name? and last_unit? and not initial?)
+        if prefix? or (with_apostrophe? and (first_name? or last_unit?)) or (first_name? and last_unit? and not initial?)
           @last_name << @unit and break
         else
           @first_name << @unit
@@ -51,23 +51,23 @@ module FullNameSplitter
     def with_apostrophe?
       @unit =~ /\w{1}'\w+/
     end
-    
+
     def last_unit?
       @units.empty?
     end
-    
+
     def first_name?
       not @first_name.empty?
     end
-    
+
     def adjust_exceptions!
       return if @first_name.size <= 1
-      
-      # Adjusting exceptions like 
+
+      # Adjusting exceptions like
       # "Ludwig Mies van der Rohe"      => ["Ludwig",         "Mies van der Rohe"   ]
       # "Juan Martín de la Cruz Gómez"  => ["Juan Martín",    "de la Cruz Gómez"    ]
       # "Javier Reyes de la Barrera"    => ["Javier",         "Reyes de la Barrera" ]
-      # Rosa María Pérez Martínez Vda. de la Cruz 
+      # Rosa María Pérez Martínez Vda. de la Cruz
       #                                 => ["Rosa María",     "Pérez Martínez Vda. de la Cruz"]
       if last_name =~ /^(van der|(vda\. )?de la \w+$)/i
         loop do
@@ -77,20 +77,20 @@ module FullNameSplitter
       end
     end
   end
-  
+
   def full_name
     [first_name, last_name].compact.join(' ')
   end
-  
+
   def full_name=(name)
     self.first_name, self.last_name = split(name)
   end
-  
-  private 
-  
+
+  private
+
   def split(name)
     name = name.to_s.strip.gsub(/\s+/, ' ')
-    
+
     if name.include?(',')
       name.
         split(/\s*,\s*/, 2).            # ",van  helsing" produces  ["", "van helsing"]
@@ -100,6 +100,6 @@ module FullNameSplitter
       [splitter.first_name, splitter.last_name]
     end
   end
-  
+
   module_function :split
 end

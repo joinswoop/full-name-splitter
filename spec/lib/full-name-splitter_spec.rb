@@ -50,7 +50,10 @@ describe Incognito do
 
       "George"                        => ["George",         nil                   ],
       "Kevin J. "                     => ["Kevin J.",       nil                   ],
-
+      "D'Ayra Selk"                   => ["D'Ayra",         "Selk"                ],
+      "Dre'Vaughn Bradley"            => ["Dre'Vaughn",     "Bradley"             ],
+      "Donna'Kay Cunningham"          => ["Donna'Kay",      "Cunningham"          ],
+      "Ben Mckinney"                  => ["Ben",            "Mckinney"            ],
       "Thomas G. Della Fave"          => ["Thomas G.",      "Della Fave"          ],
       "Anne du Bourg"                 => ["Anne",           "du Bourg"            ],
 
