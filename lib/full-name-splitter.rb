@@ -3,6 +3,7 @@
 module FullNameSplitter
 
   PREFIXES = %w(de da la du del dei vda. dello della degli delle van von der den heer ten ter vande vanden vander voor ver aan mc).freeze
+  SUFFIXES = %w(i ii iii iv v vi jr jr. sr sr.)
 
   class Splitter
 
@@ -16,7 +17,7 @@ module FullNameSplitter
     def split!
       @units = @full_name.split(/\s+/)
       while @unit = @units.shift do
-        if prefix? or (with_apostrophe? and (first_name? or last_unit?)) or (first_name? and last_unit? and not initial?)
+        if prefix? or (with_apostrophe? and (first_name? or last_unit_before_suffix?)) or (first_name? and last_unit_before_suffix? and not initial?)
           @last_name << @unit and break
         else
           @first_name << @unit
@@ -52,8 +53,8 @@ module FullNameSplitter
       @unit =~ /\w{1}'\w+/
     end
 
-    def last_unit?
-      @units.empty?
+    def last_unit_before_suffix?
+      @units.empty? || (@units.one? && SUFFIXES.include?(@units.first.downcase))
     end
 
     def first_name?
