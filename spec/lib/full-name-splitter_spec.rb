@@ -91,10 +91,11 @@ describe Incognito do
       # the architect Ludwig Mies van der Rohe, from the West German city of Aachen, was originally Ludwig Mies;
       "Ludwig Mies van der Rohe"      => ["Ludwig",         "Mies van der Rohe"   ],
 
-      # If comma is provided then split by comma
-
-      "John, Quincy Adams"             => ["John",    "Quincy Adams"              ],
-      "Ludwig Mies, van der Rohe"      => ["Ludwig Mies", "van der Rohe"          ],
+      # If comma is provided then split by comma Last, First Middle
+      "Adams, John Quincy"             => ["John Quincy",   "Adams"               ],
+      "Bush, George W"                 => ["George W",      "Bush"                ],
+      "Smith, John"                    => ["John",          "Smith"               ],
+      "Ludwig Mies, van der Rohe"      => ["Ludwig Mies",   "van der Rohe"        ],
 
       # Test ignoring unnecessary whitespaces
       "\t Ludwig  Mies\t van der Rohe "   => ["Ludwig", "Mies van der Rohe"       ],

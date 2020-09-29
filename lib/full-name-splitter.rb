@@ -93,9 +93,13 @@ module FullNameSplitter
     name = name.to_s.strip.gsub(/\s+/, ' ')
 
     if name.include?(',')
-      name.
-        split(/\s*,\s*/, 2).            # ",van  helsing" produces  ["", "van helsing"]
-        map{ |u| u.empty? ? nil : u }   # but it should be [nil, "van helsing"] by lib convection
+      if name.count(',') > 1 || name =~ /van\s/
+        name.
+          split(/\s*,\s*/, 2).            # ",van  helsing" produces  ["", "van helsing"]
+          map{ |u| u.empty? ? nil : u }   # but it should be [nil, "van helsing"] by lib convection
+      else
+        name.split(',').map(&:strip).reverse
+      end
     else
       splitter = Splitter.new(name)
       [splitter.first_name, splitter.last_name]
